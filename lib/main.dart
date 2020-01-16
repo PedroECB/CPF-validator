@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -28,9 +29,18 @@ class _HomeState extends State<Home> {
     String cpf = _cpfController.text;
     var newCpf = cpf.split('');
 
-    var numberDigits = newCpf.map((item) => int.parse(item));
+//     numberDigits = newCpf.map((item) => int.parse(item));
 
-    print(numberDigits);
+      List <int> numberDigits = [];
+
+       newCpf.forEach((element){
+//         numberDigits.add(int.parse(element));
+          print("Ok: ${int.parse(element)}");
+          numberDigits.add(int.parse(element));
+      });
+
+
+
     int sumA = 0;
     int counter = 0;
 
@@ -41,8 +51,12 @@ class _HomeState extends State<Home> {
       counter++;
     }
 
+    print("Primeira soma: $sumA");
+
     int rest = sumA % 11;
     int firstDigit = rest < 2 ? 0 : 11 - rest;
+
+    numberDigits[9] = firstDigit;
 
     int sumB = 0;
     counter = 0;
@@ -52,8 +66,10 @@ class _HomeState extends State<Home> {
       counter++;
     }
 
-    rest = sumB % 11;
-    int secondaryDigit = rest < 2 ? 0 : 11 - rest;
+    print("Segunda soma: $sumB");
+
+    int restB = sumB % 11;
+    int secondaryDigit = restB < 2 ? 0 : 11 - restB;
 
     print("Digitos corretos: ${firstDigit} - ${secondaryDigit}");
 
@@ -102,7 +118,6 @@ class _HomeState extends State<Home> {
           newDigitos[9] +
           newDigitos[10];
 
-//      _cpfController.text = digitosMask;
 
       print("Digitos do cpf com máscara: " + digitosMask);
 
@@ -177,7 +192,6 @@ class _HomeState extends State<Home> {
                         fontWeight: FontWeight.bold,
                         fontSize: 15),
                     border: OutlineInputBorder(),
-//                    helperText: "Digite apenas números",
                     helperStyle: TextStyle(
                         color: Colors.grey, fontWeight: FontWeight.bold),
                     errorStyle: TextStyle(
@@ -192,7 +206,6 @@ class _HomeState extends State<Home> {
                     return "Insira todos os dígitos do CPF";
                   }
                 },
-//                onChanged: _format,
                 maxLength: 11,
                 inputFormatters: <TextInputFormatter>[
                   WhitelistingTextInputFormatter.digitsOnly,
