@@ -20,9 +20,12 @@ class _HomeState extends State<Home> {
   String _digits = "";
   static String alert = "";
 
+  String _generated = "";
+
   Text _message = Text(alert);
 
   TextEditingController _cpfController = TextEditingController();
+  TextEditingController _cpfGenerated = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _valida() {
@@ -79,6 +82,11 @@ class _HomeState extends State<Home> {
     String firstCompare = firstDigit.toString();
     String secondaryCompare = secondaryDigit.toString();
 
+
+    _generated = "${newCpf[0]+newCpf[1]+newCpf[2]}.${newCpf[3]+newCpf[4]+newCpf[5]}.${newCpf[6]+newCpf[7]+newCpf[8]}-$firstCompare$secondaryCompare";
+
+    print(_generated);
+
     setState(() {
       if (firstCompare == newCpf[9] && secondaryCompare == newCpf[10]) {
         alert = "CPF VÁLIDO";
@@ -125,6 +133,15 @@ class _HomeState extends State<Home> {
         _digits = digitosMask;
       });
     }
+  }
+
+  void _generate(){
+      if(_generated == "" || _cpfController.text.length < 11){
+        return;
+      }else{
+        _cpfGenerated.text = _generated;
+      }
+
   }
 
   void _resetFields(){
@@ -232,6 +249,26 @@ class _HomeState extends State<Home> {
                 },
               ),
             ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(45.0, 10.0, 45.0, 0.0),
+              child: RaisedButton(
+                color: Colors.lightBlue,
+                child: Text("GERAR CPF", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),),
+                onPressed: _generate,
+                padding: EdgeInsets.all(15.0),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(45.0, 10.0, 45.0, 0.0),
+              child: TextField(
+                keyboardType: TextInputType.text,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(),
+                style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold),
+                controller: _cpfGenerated,
+                readOnly: true,
+              ),
+            )
           ],
         ),
       )),
